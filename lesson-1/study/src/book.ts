@@ -1,11 +1,17 @@
-export class Book {
+export interface IBook {
   name: string;
   genre: string;
-  pageAmount: number;
+  price: number;
+}
 
-  constructor(name, genre, pageAmount) {
+export class Book implements IBook {
+  name: string;
+  genre: string;
+  price: number;
+
+  constructor(name, genre, price) {
     this.name = name;
     this.genre = genre;
-    this.pageAmount = pageAmount;
+    this.price = price;
   }
 }

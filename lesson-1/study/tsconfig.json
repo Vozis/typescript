@@ -9,6 +9,7 @@
     "node_modules"
   ],
   "files": [
-    "src/index.ts"
+    "src/study.ts"
+//    "src/index.ts"
   ]
 }
