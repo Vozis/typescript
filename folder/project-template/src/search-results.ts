@@ -1,6 +1,7 @@
 import { renderBlock, toggleFavoriteItem } from './lib';
 import { Place } from './types';
 import axios from 'axios';
+import { makeLogger } from 'tsconfig-paths-webpack-plugin/lib/logger';
 
 export function renderSearchStubBlock() {
   renderBlock(
@@ -79,16 +80,27 @@ export function renderSearchResultsBlock(places: Place[]) {
     `,
   );
 
-  /*const bookButtons = document.querySelectorAll('#book');
+  const bookButtons = document.querySelectorAll('#book');
   bookButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-
+    button.addEventListener('click', async () => {
+      const searchValues = JSON.parse(localStorage.getItem('values'));
+      console.log(searchValues);
       const listEl = button.closest('.result');
       const el = listEl.querySelector('.result-info--header').querySelector('p').textContent;
-      const favoriteEl = places.find(place => place.name === el);
-      toggleFavoriteItem(favoriteEl);
+      const place = places.find(place => place.name === el);
+      console.log(place);
+      await axios.patch(`http://localhost:3030/places/
+      ${place.id}
+      ?checkInDate=${new Date(searchValues.checkin).getTime() / 1000}
+      &checkOutDate=${new Date(searchValues.checkout).getTime() / 1000}`, {
+        checkin: new Date(),
+        checkout: new Date(),
+      }).then((data) => {
+        console.log(data);
+      }).catch((err) => console.log(err));
     });
-  });*/
+
+  });
 
   const favoriteButtons = document.querySelectorAll('.favorites');
   favoriteButtons.forEach(button => {

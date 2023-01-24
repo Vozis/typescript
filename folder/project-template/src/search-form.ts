@@ -83,6 +83,7 @@ export const search = (form, cb) => {
       checkout: elements.checkout.value,
       price: elements.price.value,
     };
+    localStorage.setItem('values', JSON.stringify(values));
     const response = await axios.get(`http://localhost:3030/places?checkInDate=${new Date(values.checkin).getTime() / 1000}&checkOutDate=${new Date(values.checkout).getTime() / 1000}&coordinates=59.9386,30.3141`);
     console.log('RESPONSE:', response.data);
     renderSearchResultsBlock(response.data);
