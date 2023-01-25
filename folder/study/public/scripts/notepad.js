@@ -1,0 +1,10 @@
+export class Notepad {
+    constructor(name, price) {
+        this.name = name;
+        this.price = price;
+    }
+    getProductDescription() {
+        return `Notepad "${this.name}"`;
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoibm90ZXBhZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL3NyYy9ub3RlcGFkLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUVBLE1BQU0sT0FBTyxPQUFPO0lBSWxCLFlBQVksSUFBWSxFQUFFLEtBQWE7UUFDckMsSUFBSSxDQUFDLElBQUksR0FBRyxJQUFJLENBQUM7UUFDakIsSUFBSSxDQUFDLEtBQUssR0FBRyxLQUFLLENBQUM7SUFDckIsQ0FBQztJQUVELHFCQUFxQjtRQUNuQixPQUFPLFlBQVksSUFBSSxDQUFDLElBQUksR0FBRyxDQUFDO0lBQ2xDLENBQUM7Q0FDRiIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IElQcm9kdWN0IH0gZnJvbSAnLi9wcm9kdWN0JztcblxuZXhwb3J0IGNsYXNzIE5vdGVwYWQgaW1wbGVtZW50cyBJUHJvZHVjdCB7XG4gIG5hbWU6IHN0cmluZztcbiAgcHJpY2U6IG51bWJlcjtcblxuICBjb25zdHJ1Y3RvcihuYW1lOiBzdHJpbmcsIHByaWNlOiBudW1iZXIpIHtcbiAgICB0aGlzLm5hbWUgPSBuYW1lO1xuICAgIHRoaXMucHJpY2UgPSBwcmljZTtcbiAgfVxuXG4gIGdldFByb2R1Y3REZXNjcmlwdGlvbigpOiBzdHJpbmcge1xuICAgIHJldHVybiBgTm90ZXBhZCBcIiR7dGhpcy5uYW1lfVwiYDtcbiAgfVxufVxuIl19
