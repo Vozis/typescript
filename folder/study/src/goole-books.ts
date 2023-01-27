@@ -1,4 +1,5 @@
 import { Book } from './book.js';
+import fetch from 'node-fetch';
 
 export interface IBookResponse {
   kind: string;

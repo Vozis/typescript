@@ -9,7 +9,9 @@ import {
 } from './books-collection.js';
 import { CollectionNew } from './collection.js';
 import { getBookInfo } from './goole-books.js';
-import { IRatingable } from './ratingable';
+import { IRatingable } from './ratingable.js';
+import { upperCase } from './string-helper.js';
+import { search, lookup, Callback, Book as BookGoogle } from 'google-books-search';
 
 // function findBook(
 //   genre: string,
@@ -29,10 +31,10 @@ import { IRatingable } from './ratingable';
 //
 // console.log(findBook('fantasy', 500));
 
-const jkRowling: Partial<IAuthor> = {
+const jkRowling: BookAuthor = {
   firstName: 'J.K.',
   lastName: 'Rowling',
-  rating: 4.6,
+  // rating: 4.6,
 };
 
 const harryPotter = new Book('Harry Potter', IGenre.Fantasy, 500, jkRowling);
@@ -78,14 +80,14 @@ bookNameRequest.then(name => {
   console.log(name.toUpperCase());
 });
 
-const harryPotterIsbn = '9781408845646';
+const harryPotterIsbn = '9783940862211';
 
 getBookInfo(harryPotterIsbn)
   .then(book => {
     console.log(
       book.volumeInfo.title,
-      book.volumeInfo.description,
-      book.volumeInfo.authors[0],
+      // book.volumeInfo.description,
+      // book.volumeInfo.authors[0],
     );
   })
   .catch(err => {
@@ -119,3 +121,31 @@ const author: BookAuthor = {
 
 const book = new Book('Harry Potter', IGenre.Fantasy, 100, author);
 console.log(book);
+
+// =================================================================
+console.log('================================================================');
+console.log('Урок 3');
+console.log('================================================================');
+
+console.log('upperCase Text: ', upperCase('Harry Potter'));
+
+// console.log(search, lookup);
+
+const searchCallback: Callback<BookGoogle[]> = (error, results) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(results[0]);
+  }
+};
+
+search('harry potter and the sorcerer\'s stone', {
+  type: 'magazines',
+}, searchCallback);
+
+
+lookup('xieSuAAACAAJ', (err, results) => {
+  if (err) console.log(err);
+  else console.log(results);
+});
+

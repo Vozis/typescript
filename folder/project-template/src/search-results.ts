@@ -79,29 +79,43 @@ export function renderSearchResultsBlock(places: Place[]) {
     `,
   );
 
-  /*const bookButtons = document.querySelectorAll('#book');
+  const bookButtons = document.querySelectorAll('#book');
   bookButtons.forEach(button => {
-    button.addEventListener('click', (event) => {
-
+    button.addEventListener('click', async event => {
       const listEl = button.closest('.result');
-      const el = listEl.querySelector('.result-info--header').querySelector('p').textContent;
+      const el = listEl
+        .querySelector('.result-info--header')
+        .querySelector('p').textContent;
       const favoriteEl = places.find(place => place.name === el);
-      toggleFavoriteItem(favoriteEl);
+      const searchValues = JSON.parse(localStorage.getItem('values'));
+      await axios
+        .patch(
+          `http://localhost:3030/places/
+      ${favoriteEl.id}
+      ?checkInDate=${searchValues.checkInDate}
+      &checkOutDate=${searchValues.checkOutDate}`,
+          {
+            checkin: new Date(),
+            checkout: new Date(),
+          },
+        )
+        .then(data => {
+          console.log(data);
+        })
+        .catch(err => console.log(err));
     });
-  });*/
+  });
 
   const favoriteButtons = document.querySelectorAll('.favorites');
   favoriteButtons.forEach(button => {
-    button.addEventListener('click', async (event) => {
+    button.addEventListener('click', async event => {
       button.classList.toggle('active');
       const listEl = button.closest('.result');
-      const el = listEl.querySelector('.result-info--header').querySelector('p').textContent;
+      const el = listEl
+        .querySelector('.result-info--header')
+        .querySelector('p').textContent;
       const favoriteEl = places.find(place => place.name === el);
       toggleFavoriteItem(favoriteEl);
     });
   });
-
 }
-
-
-

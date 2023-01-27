@@ -1,18 +1,17 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "es2020",
-    "target": "es2020",
+    "module": "es6",
+    "target": "es5",
     "moduleResolution": "node",
     "allowJs": true,
     "watch": true,
     "inlineSourceMap": true,
-    "inlineSources": true
+    "inlineSources": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "declarationDir": "./@types"
   },
-  "files": [
-    "src/index.ts"
-  ],
-  "include": [
-    "declaration.d.ts"
-  ]
+  "include": ["./**/*"],
+  "exclude": ["node_modules", "typescript-flatrent-sdk"]
 }
