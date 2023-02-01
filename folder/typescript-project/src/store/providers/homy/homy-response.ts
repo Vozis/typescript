@@ -5,8 +5,8 @@ export interface Place {
   description: string;
   bookedDates: number[];
   price: number;
-  availableDates: any;
-  remoteness?: number;
+  availableDates?: any;
+  remoteness?: number | 0;
 }
 
 export interface PlaceListResponse {
@@ -16,5 +16,5 @@ export interface PlaceListResponse {
 
 export interface PlaceResponse {
   // errorMessage?: string;
-  item: Place;
+  // item: Place;
 }

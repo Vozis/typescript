@@ -16,5 +16,9 @@ export function sortPlaces(value: string): void {
       places.sort((a, b) => a.remoteness - b.remoteness);
       renderSearchResults(places);
       break;
+    default:
+      places.sort((a, b) => a.price - b.price);
+      renderSearchResults(places);
+      break;
   }
 }

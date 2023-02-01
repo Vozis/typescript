@@ -1,9 +1,9 @@
-import { Place, SearchFilter } from './types';
+import { BookParams, Place, SearchFilter } from './types.js';
 
 export interface Provider {
   find(filter: SearchFilter): Promise<Place[]>;
 
-  book(place: Place, dateRange: Date[]): Promise<Place>;
+  book(params: BookParams): Promise<Place>;
 
-  getById(id: string): Promise<Place>;
+  // getById(id: string): Promise<Place>;
 }

@@ -4,8 +4,6 @@ import { FlatRentProvider } from './store/providers/flatRent/flat-rent-provider.
 import { BookParams, Place, SearchFilter } from './store/domain/types.js';
 import { renderToast } from './lib.js';
 
-let isBooking = true;
-
 export function book() {
   const bookButtons = document.querySelectorAll('#book');
   const homy = new HomyProvider();
@@ -24,40 +22,43 @@ export function book() {
         const values = JSON.parse(localStorage.getItem('values'));
         let place: Place = places.find(place => place.name === elName);
         places.filter(item => item.id !== place.id);
-        const params: BookParams = {
-          place,
-          checkInDate: new Date(values.checkInDate),
-          checkOutDate: new Date(values.checkOutDate),
-        };
 
+        let params: BookParams = {} as BookParams;
         if (place.provider === 'homy') {
-          homy.book(params).then(result => {
-            console.log(result);
-            const newPlaces = [...places, result];
-            localStorage.setItem('places', JSON.stringify(newPlaces));
-            renderToast(
-              {
-                text: `Бронирование отеля ${result.name} на с ${values.checkInDate} по ${values.checkOutDate} успешно`,
-                type: 'successful',
-              },
-              {
-                name: 'Понял',
-                handler: () => {
-                  console.log('Уведомление закрыто');
-                },
-              },
-            );
-          });
+          params = {
+            checkInDate: new Date(values.checkInDate),
+            checkOutDate: new Date(values.checkOutDate),
+            place,
+          };
         }
 
         if (place.provider === 'flat-rent') {
-          flatRent
-            .book(
-              params.place.originalId,
-              params.checkInDate,
-              params.checkOutDate,
-            )
-            .then(result => {
+          params = {
+            checkInDate: new Date(values.checkInDate),
+            checkOutDate: new Date(values.checkOutDate),
+            flatId: place.originalId,
+          };
+        }
+
+        let isBookPossible = JSON.parse(localStorage.getItem('isBookPossible'));
+
+        if (!isBookPossible) {
+          renderToast(
+            {
+              text: 'Информация устарела. Повторите запрос',
+              type: 'warning',
+            },
+            {
+              name: 'Понял',
+              handler: () => {
+                console.log('Уведомление закрыто');
+              },
+            },
+          );
+        } else {
+          if (place.provider === 'homy') {
+            homy.book(params).then(result => {
+              console.log(result);
               const newPlaces = [...places, result];
               localStorage.setItem('places', JSON.stringify(newPlaces));
               renderToast(
@@ -73,6 +74,27 @@ export function book() {
                 },
               );
             });
+          }
+
+          if (place.provider === 'flat-rent') {
+            flatRent.book(params).then(result => {
+              console.log(result);
+              const newPlaces = [...places, result];
+              localStorage.setItem('places', JSON.stringify(newPlaces));
+              renderToast(
+                {
+                  text: `Бронирование отеля ${result.name} на с ${values.checkInDate} по ${values.checkOutDate} успешно`,
+                  type: 'successful',
+                },
+                {
+                  name: 'Понял',
+                  handler: () => {
+                    console.log('Уведомление закрыто');
+                  },
+                },
+              );
+            });
+          }
         }
       },
       {

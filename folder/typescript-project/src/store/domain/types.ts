@@ -21,6 +21,10 @@ export class Place {
     return `${this.provider}-${this.originalId}`;
   }
 
+  get providerName() {
+    return this.provider;
+  }
+
   public isProvideBy(providerName: string): boolean {
     return this.provider === providerName;
   }
@@ -35,7 +39,8 @@ export interface SearchFilter {
 }
 
 export interface BookParams {
-  place: Place;
   checkInDate: Date;
   checkOutDate: Date;
+  place?: Place;
+  flatId?: string;
 }

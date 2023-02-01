@@ -34,9 +34,7 @@ export function renderToast(message, action) {
 export function getFavoritesAmount() {
   let favoritesAmount: number = 0;
   const favoriteList = JSON.parse(localStorage.getItem('favoriteItems'));
-  // console.log('favoriteList:', favoriteList);
   favoritesAmount = favoriteList?.length || 0;
-  console.log('favoritesAmount:', favoritesAmount);
   localStorage.setItem('favoritesAmount', JSON.stringify(favoritesAmount));
   return favoritesAmount;
 }

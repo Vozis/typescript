@@ -23,15 +23,15 @@ export class HomyProvider implements Provider {
     });
   }
 
-  public getById(id: string): Promise<Place> {
-    return HttpHelper.fetchAsJson<Place>(
-      HomyProvider.apiUrl + '/places/' + id,
-    ).then(response => {
-      // this.assertIsValidResponse(response);
-
-      return this.convertPLaceResponse(response);
-    });
-  }
+  // public getById(id: string): Promise<Place> {
+  //   return HttpHelper.fetchAsJson<Place>(
+  //     HomyProvider.apiUrl + '/places/' + id,
+  //   ).then(response => {
+  //     // this.assertIsValidResponse(response);
+  //
+  //     return this.convertPlaceResponse(response);
+  //   });
+  // }
 
   public book(params: BookParams): Promise<Place> {
     return HttpHelper.fetchAsJson<Place>(
@@ -42,13 +42,12 @@ export class HomyProvider implements Provider {
         method: 'PATCH',
       },
     ).then(response => {
-      console.log(response);
       this.assertIsValidResponse(response);
-      return this.convertPLaceResponse(response);
+      return this.convertPlaceResponse(response);
     });
   }
 
-  private assertIsValidResponse(response: Place[] | Place): void {
+  private assertIsValidResponse(response: any): void {
     if (response.name && response.name === 'BadRequest') {
       throw new Error(response.message);
     }
@@ -70,7 +69,7 @@ export class HomyProvider implements Provider {
     );
   }
 
-  private convertPLaceResponse(item: HomyPLace): Place {
+  private convertPlaceResponse(item: HomyPLace): Place {
     return new Place(
       HomyProvider.provider,
       String(item.id),
@@ -86,7 +85,7 @@ export class HomyProvider implements Provider {
 
   private convertPlaceListResponse(response: HomyPLace[]): Place[] {
     return response.map((item: HomyPLace) => {
-      return this.convertPLaceResponse(item);
+      return this.convertPlaceResponse(item);
     });
   }
 }

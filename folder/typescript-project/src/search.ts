@@ -27,15 +27,34 @@ export function checkForm(form): void {
         coordinates: elements.coordinates.value,
         provider: Array.from(elements.provider),
       };
-      console.log(values);
       localStorage.setItem('values', JSON.stringify(values));
-      search(values);
+      if (values !== null) {
+        search(values);
+
+        localStorage.setItem('isBookPossible', JSON.stringify(true));
+        const timerId = setTimeout(() => {
+          renderToast(
+            {
+              text: 'Информация устарела. Обновите данные поиска',
+              type: 'warning',
+            },
+            {
+              name: 'Понял',
+              handler: () => {
+                console.log('Уведомление закрыто');
+              },
+            },
+          );
+          localStorage.setItem('isBookPossible', JSON.stringify(false));
+          clearTimeout(timerId);
+        }, 10000);
+      }
     },
     { once: true },
   );
 }
 
-function search(values: SearchFormData) {
+async function search(values: SearchFormData) {
   const homy = new HomyProvider();
   const flatRent = new FlatRentProvider();
 
@@ -56,17 +75,16 @@ function search(values: SearchFormData) {
         );
       } else {
         renderSearchResultsHeader();
-        let renderPLace: Place[] = [];
+        let renderPlace: Place[] = [];
         allResults.forEach(result => {
           values.provider.forEach(provider => {
             if (provider.checked && result.isProvideBy(provider.value)) {
-              renderPLace.push(result);
+              renderPlace.push(result);
             }
           });
         });
-        console.log(renderPLace);
-        renderSearchResults(renderPLace);
-        localStorage.setItem('places', JSON.stringify(renderPLace));
+        renderSearchResults(renderPlace);
+        localStorage.setItem('places', JSON.stringify(renderPlace));
       }
     })
     .catch(err => {

@@ -30,6 +30,9 @@ function renderOnePlace(place: Place) {
   const isFavoriteEl = isFavorite(place);
   let item = document.createElement('li');
   item.classList.add('result');
+  item.setAttribute('data-provider', place.provider);
+  item.setAttribute('data-originalId', place.originalId);
+
   const itemHtml = `
   <div class='result-container'>
           <div class='result-img-container'>
@@ -41,7 +44,9 @@ function renderOnePlace(place: Place) {
               <p>${place.name}</p>
               <p class='price'>${place.price}</p>
             </div>
-            <div class='result-info--map'><i class='map-icon'></i> ${place.remoteness} км от вас</div>
+            <div class='result-info--map'><i class='map-icon'></i> ${
+              place.remoteness ? place.remoteness : 5
+            } км от вас</div>
             <div class='result-info--descr'>${place.description}</div>
             <div class='result-info--footer'>
               <div>

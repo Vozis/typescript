@@ -145,12 +145,13 @@ export class FlatRentSdk {
   /**
    * Book flat.
    *
-   * @param {number} flatId
    * @param {Date} checkInDate
    * @param {Date} checkOutDate
+   * @param {string} flatId
    * @returns {number}
    */
-  book(flatId, checkInDate, checkOutDate) {
+  book(params) {
+    const { checkInDate, checkOutDate, flatId } = params;
     return new Promise((resolve, reject) => {
       try {
         const flat = this.database.find(item => {
@@ -183,7 +184,7 @@ export class FlatRentSdk {
         }
         this._writeDatabase(this.database);
 
-        resolve(this._generateTransactionId());
+        resolve(flat);
       } catch (error) {
         reject(error);
       }

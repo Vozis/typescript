@@ -1,5 +1,5 @@
 import { Provider } from '../../domain/provider.js';
-import { Place, SearchFilter } from '../../domain/types.js';
+import { BookParams, Place, SearchFilter } from '../../domain/types.js';
 import { HttpHelper } from '../../helpers/http-helper.js';
 import { dateToUnixStamp } from '../../../date-format.js';
 import { FlatRentSdk } from '../../../flat-rent-sdk.js';
@@ -18,29 +18,20 @@ export class FlatRentProvider implements Provider {
     return this.convertPlaceListResponse(<FlatListResponse[]>response);
   }
 
-  public async getById(id: string): Promise<Place> {
-    const response: FlatListResponse = await flatRentSdk.getById(id);
+  // public async getById(id: string): Promise<Place> {
+  //   const response: FlatListResponse = await flatRentSdk.getById(id);
+  //   this.assertIsValidResponse(response);
+  //   return this.convertPlaceResponse(response);
+  // }
+
+  public async book(params: BookParams): Promise<Place> {
+    const response: any = await flatRentSdk.book(params);
+    console.log(response);
     this.assertIsValidResponse(response);
     return this.convertPlaceResponse(response);
   }
 
-  public async book(
-    id: string,
-    checkInDate: Date,
-    checkOutDate: Date,
-  ): Promise<Place> {
-    const response: FlatListResponse = await flatRentSdk.book(
-      id,
-      checkInDate,
-      checkOutDate,
-    );
-    this.assertIsValidResponse(response);
-    return this.convertPlaceResponse(response);
-  }
-
-  private assertIsValidResponse(
-    response: FlatListResponse | FlatResponse,
-  ): void {
+  private assertIsValidResponse(response: any): void {
     if (response.errorMessage != null) {
       throw new Error(response.errorMessage);
     }
