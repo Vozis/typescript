@@ -1,11 +1,7 @@
 import { Provider } from '../../domain/provider.js';
 import { BookParams, Place, SearchFilter } from '../../domain/types.js';
 import { HttpHelper } from '../../helpers/http-helper.js';
-import {
-  Place as HomyPLace,
-  PlaceListResponse,
-  PlaceResponse,
-} from './homy-response.js';
+import { Place as HomyPLace } from './homy-response.js';
 import { dateToUnixStamp } from '../../../date-format.js';
 
 export class HomyProvider implements Provider {
@@ -36,7 +32,7 @@ export class HomyProvider implements Provider {
   public book(params: BookParams): Promise<Place> {
     return HttpHelper.fetchAsJson<Place>(
       HomyProvider.apiUrl +
-        `/places/${params.place.originalId}?` +
+        `/places/${params.flatId}?` +
         this.convertBookToQueryString(params),
       {
         method: 'PATCH',
@@ -78,7 +74,6 @@ export class HomyProvider implements Provider {
       item.description,
       item.bookedDates,
       item.price,
-      item.availableDates,
       item.remoteness,
     );
   }

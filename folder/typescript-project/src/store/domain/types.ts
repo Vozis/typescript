@@ -13,8 +13,7 @@ export class Place {
     public readonly description: string,
     public bookedDates: number[],
     public readonly price: number,
-    public readonly availableDates?: number[],
-    public readonly remoteness?: number,
+    public readonly remoteness: number,
   ) {}
 
   get id(): string {
@@ -32,7 +31,7 @@ export class Place {
 
 export interface SearchFilter {
   city: string;
-  coordinates: [number, number];
+  coordinates: string;
   checkInDate: Date;
   checkOutDate: Date;
   priceLimit: number;
@@ -41,6 +40,5 @@ export interface SearchFilter {
 export interface BookParams {
   checkInDate: Date;
   checkOutDate: Date;
-  place?: Place;
-  flatId?: string;
+  flatId: string;
 }

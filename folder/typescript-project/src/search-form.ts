@@ -1,4 +1,4 @@
-import { addDays, addMonths, formatDate } from './date-format.js';
+import { addMonths, formatDate } from './date-format.js';
 import { renderBlock } from './lib.js';
 
 export function renderSearchFormBlock(startDate: Date, endDate: Date) {
@@ -20,7 +20,7 @@ export function renderSearchFormBlock(startDate: Date, endDate: Date) {
             <label><input type='checkbox' id='homy' name='provider' value='homy' checked /> Homy</label>
             <label><input type='checkbox' id='flat' name='provider' value='flat-rent' checked /> FlatRent</label>
           </div>
-        </div>
+        </div> 
         <div class='row'>
           <div>
             <label for='check-in-date'>Дата заезда</label>

@@ -12,10 +12,10 @@ export function addDays(date: Date, days: number): Date {
   return dateCopy;
 }
 
-export function formatDate(date) {
+export function formatDate(date: Date) {
   return date.toISOString().split('T')[0];
 }
 
-export function dateToUnixStamp(date) {
+export function dateToUnixStamp(date: Date) {
   return date.getTime() / 1000;
 }

@@ -1,23 +1,32 @@
 import { renderSearchResults } from './search-results.js';
+import { Place } from './store/domain/types.js';
+import { getDataFromLocalStorage } from './utils.js';
 
-export function sortPlaces(value: string): void {
-  const places = JSON.parse(localStorage.getItem('places'));
+export function sortPlaces(value: string): void | null {
+  const places: Place[] | null = getDataFromLocalStorage<Place[]>('places');
 
+  if (places == null) {
+    return null;
+  }
   switch (value) {
     case 'minToMax':
-      places.sort((a, b) => a.price - b.price);
+      places.sort((place1, place2) => place1.price - place2.price);
+      // console.log('minToMax', places);
       renderSearchResults(places);
       break;
     case 'maxToMin':
-      places.sort((a, b) => b.price - a.price);
+      places.sort((place1, place2) => place2.price - place1.price);
+      // console.log('maxToMin', places);
       renderSearchResults(places);
       break;
     case 'close':
-      places.sort((a, b) => a.remoteness - b.remoteness);
+      places.sort((place1, place2) => place1.remoteness - place2.remoteness);
+      // console.log('close', places);
       renderSearchResults(places);
       break;
     default:
-      places.sort((a, b) => a.price - b.price);
+      places.sort((place1, place2) => place1.price - place2.price);
+      // console.log('minToMax', places);
       renderSearchResults(places);
       break;
   }

@@ -6,26 +6,28 @@ import {
   renderSearchResultsHeader,
 } from './search-results.js';
 import { renderToast } from './lib.js';
-import { sortPlaces } from './sortPlaces.js';
 import { FlatRentProvider } from './store/providers/flatRent/flat-rent-provider.js';
-import { SearchFormData } from './types.js';
+import { FormElements, SearchFormData } from './types.js';
 
 export let isBookPossible = true;
 
-export function checkForm(form): void {
+export function checkForm(form: Element | null): void {
+  if (form == null) {
+    return;
+  }
   form.addEventListener(
     'submit',
-    event => {
+    (event: Event) => {
       event.preventDefault();
-      const elements = event.currentTarget.elements;
+      const elements = (<FormElements>event.currentTarget).elements;
 
       const values: SearchFormData = {
-        city: elements.city.value,
-        checkInDate: elements.checkin.value,
-        checkOutDate: elements.checkout.value,
-        price: +elements.price.value,
-        coordinates: elements.coordinates.value,
-        provider: Array.from(elements.provider),
+        city: elements.city['value'],
+        checkInDate: elements.checkin['value'],
+        checkOutDate: elements.checkout['value'],
+        price: elements.price['value'],
+        coordinates: elements.coordinates['value'],
+        provider: elements.provider,
       };
       localStorage.setItem('values', JSON.stringify(values));
       if (values !== null) {
@@ -54,7 +56,7 @@ export function checkForm(form): void {
   );
 }
 
-async function search(values: SearchFormData) {
+async function search(values: SearchFormData): Promise<void> {
   const homy = new HomyProvider();
   const flatRent = new FlatRentProvider();
 
@@ -63,12 +65,13 @@ async function search(values: SearchFormData) {
     coordinates: values.coordinates,
     checkInDate: new Date(values.checkInDate),
     checkOutDate: new Date(values.checkOutDate),
-    priceLimit: values.price,
+    priceLimit: +values.price,
   };
 
   Promise.all([homy.find(filter), flatRent.find(filter)])
     .then(results => {
-      let allResults: Place[] = [].concat(results[0], results[1]);
+      const allResults: Place[] = [...results[0], ...results[1]];
+
       if (allResults.length === 0) {
         renderEmptyOrErrorSearchBlock(
           'По вашему запросу не найдено подходящих вариантов',
@@ -77,8 +80,8 @@ async function search(values: SearchFormData) {
         renderSearchResultsHeader();
         let renderPlace: Place[] = [];
         allResults.forEach(result => {
-          values.provider.forEach(provider => {
-            if (provider.checked && result.isProvideBy(provider.value)) {
+          values.provider['forEach']((provider: HTMLFormElement) => {
+            if (provider['checked'] && result.isProvideBy(provider['value'])) {
               renderPlace.push(result);
             }
           });

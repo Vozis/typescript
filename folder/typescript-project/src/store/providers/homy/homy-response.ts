@@ -5,8 +5,7 @@ export interface Place {
   description: string;
   bookedDates: number[];
   price: number;
-  availableDates?: any;
-  remoteness?: number | 0;
+  remoteness: number | 0;
 }
 
 export interface PlaceListResponse {

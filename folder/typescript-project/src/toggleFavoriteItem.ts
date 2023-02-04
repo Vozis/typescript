@@ -1,45 +1,57 @@
-import { favoriteItems, User } from './types.js';
+import { FavoriteItem, User } from './types.js';
 import { getFavoritesAmount, getUserData } from './lib.js';
 import { Place } from './store/domain/types.js';
 import { renderUserBlock } from './user.js';
+import { getDataFromLocalStorage } from './utils.js';
 
 export function toggleFavoriteItem() {
   const favoriteButtons = document.querySelectorAll('.favorites');
   favoriteButtons.forEach(button => {
     button.addEventListener(
       'click',
-      event => {
-        const target = event.target as HTMLElement;
-        let favoritePlaces = [];
+      (event: Event) => {
+        const target = <HTMLElement>event.target;
+        let favoritePlaces: FavoriteItem[] = [];
         const listEl = target.closest('.result');
-        const elName = listEl
-          .querySelector('.result-info--header')
-          .querySelector('p').textContent;
 
-        const favoritePlacesFromStorage = JSON.parse(
-          localStorage.getItem('favoriteItems'),
-        );
-        const places = JSON.parse(localStorage.getItem('places'));
+        const elId = (listEl as HTMLElement)?.getAttribute('data-originalid');
+        const elName =
+          listEl?.firstElementChild?.lastElementChild?.firstElementChild
+            ?.firstElementChild?.textContent;
+        const elImg =
+          listEl?.firstElementChild?.firstElementChild?.lastElementChild;
+        const elImgUrl = (<HTMLImageElement>elImg).currentSrc;
 
-        const favoriteEl: Place = places.find(place => place.name === elName);
+        const favoritePlacesFromStorage: FavoriteItem[] | null =
+          getDataFromLocalStorage<FavoriteItem[]>('favoriteItems');
+
+        // const places: Place[] = JSON.parse(
+        //   localStorage.getItem('places') || '',
+        // ) as Place[];
+
+        // const favoriteEl = places.find(place => place.name === elName);
+
+        if (!elId || !elName || !elImgUrl) {
+          return;
+        }
 
         if (favoritePlacesFromStorage == null) {
           favoritePlaces = [
             {
-              id: favoriteEl.originalId,
-              name: favoriteEl.name,
-              imgUrl: favoriteEl.image,
+              id: elId,
+              name: elName,
+              imgUrl: elImgUrl,
             },
           ];
           target.classList.add('active');
           localStorage.setItem('favoriteItems', JSON.stringify(favoritePlaces));
         } else {
           const foundFavoritePlace = favoritePlacesFromStorage.find(
-            el => el.id === favoriteEl.originalId,
+            el => el.id === elId,
           );
           if (foundFavoritePlace) {
             favoritePlaces = favoritePlacesFromStorage.filter(
-              item => item.id !== favoriteEl.originalId,
+              item => item.id !== elId,
             );
             target.classList.remove('active');
             localStorage.setItem(
@@ -50,9 +62,9 @@ export function toggleFavoriteItem() {
             favoritePlaces = [
               ...favoritePlacesFromStorage,
               {
-                id: favoriteEl.originalId,
-                name: favoriteEl.name,
-                imgUrl: favoriteEl.image,
+                id: elId,
+                name: elName,
+                imgUrl: elImgUrl,
               },
             ];
             target.classList.add('active');
@@ -62,7 +74,7 @@ export function toggleFavoriteItem() {
             );
           }
         }
-        const user = getUserData() as User;
+        const user = <User>getUserData();
         renderUserBlock(user.userName, user.avatarUrl, +getFavoritesAmount());
       },
       {
@@ -72,8 +84,10 @@ export function toggleFavoriteItem() {
   });
 }
 
-export const isFavorite = place => {
-  const favoriteItems = JSON.parse(localStorage.getItem('favoriteItems'));
+// ТУТ ошибка
+export function isFavorite(place: Place): string {
+  const favoriteItems: FavoriteItem[] | null =
+    getDataFromLocalStorage<FavoriteItem[]>('favoriteItems');
 
   if (favoriteItems == null) {
     return '';
@@ -84,4 +98,4 @@ export const isFavorite = place => {
     return 'active';
   }
   return '';
-};
+}

@@ -1,23 +1,35 @@
-import { Place } from './store/domain/types.js';
-
 export interface SearchFormData {
   city: string;
   checkInDate: string;
   checkOutDate: string;
-  price: number;
-  coordinates: [number, number];
-  provider: any[];
+  price: string;
+  coordinates: string;
+  provider: HTMLFormElement;
 }
 
 export class User {
-  userName: string;
-  avatarUrl: string;
+  constructor(public userName: string, public avatarUrl: string) {}
 }
 
-export class FavoritesAmounts {
+export interface FavoritesAmounts {
   favoritesAmount: number;
 }
 
-export class favoriteItems {
-  favoriteItems: Place[];
+export interface FavoriteItem {
+  id: string;
+  name: string;
+  imgUrl: string;
+}
+
+interface MyFormCollection extends HTMLFormControlsCollection {
+  city: HTMLFormElement;
+  checkin: HTMLFormElement;
+  checkout: HTMLFormElement;
+  price: HTMLFormElement;
+  coordinates: HTMLFormElement;
+  provider: HTMLFormElement;
+}
+
+export interface FormElements extends HTMLFormElement {
+  elements: MyFormCollection;
 }

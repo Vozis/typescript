@@ -24,7 +24,8 @@ function sortByPrice(one: Book, two: Book) {
   }
 
   Promise.all([ozon.find(filter), bukvoed.find(filter)]).then((results) => {
-    const allResults: Book[] = [].concat(results[0], results[1]);
+    const allResults: Book[] = [];
+    allResults.concat(results[0], results[1]);
     allResults.sort(sortByPrice);
   });
 }

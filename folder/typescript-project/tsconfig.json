@@ -1,4 +1,5 @@
 {
+  "extends": "./tsconfig-check.json",
   "compilerOptions": {
     //    "baseUrl": "./packages",
     "outDir": "public/scripts",

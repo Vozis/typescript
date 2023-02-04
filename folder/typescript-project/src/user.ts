@@ -1,5 +1,4 @@
-import { getFavoritesAmount, renderBlock } from './lib.js';
-import { FavoritesAmounts } from './types.js';
+import { renderBlock } from './lib.js';
 
 export function renderUserBlock(
   userName: string,

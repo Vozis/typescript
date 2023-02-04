@@ -2,7 +2,7 @@ import { Author } from "./author.js";
 
 export type Review = [string, number, string];
 
-export enum IGenre {
+export enum Genre {
   Fantasy = 1,
   Adventure,
   Horror,

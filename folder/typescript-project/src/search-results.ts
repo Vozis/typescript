@@ -60,16 +60,17 @@ function renderOnePlace(place: Place) {
   return item;
 }
 
-export function renderSearchResults(places: Place[]) {
+export function renderSearchResults(places: Place[]): void {
   const list = document.querySelector('.results-list');
   if (!list) {
     renderSearchResultsHeader();
+  } else {
+    list.innerHTML = '';
+    places.forEach(place => {
+      const listItem = renderOnePlace(place);
+      list.appendChild(listItem);
+    });
   }
-  list.innerHTML = '';
-  places.forEach(place => {
-    const listItem = renderOnePlace(place);
-    list.appendChild(listItem);
-  });
 }
 
 export function renderSearchResultsHeader() {

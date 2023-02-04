@@ -1,12 +1,25 @@
-import { Place } from './store/domain/types';
-import { favoriteItems, FavoritesAmounts, User } from './types.js';
+import { FavoriteItem, User } from './types.js';
+import { getDataFromLocalStorage } from './utils.js';
 
-export function renderBlock(elementId, html) {
+export function renderBlock(elementId: string, html: string): void {
   const element = document.getElementById(elementId);
-  element.innerHTML = html;
+  (<HTMLElement>element).innerHTML = html;
 }
 
-export function renderToast(message, action) {
+interface MessageToast {
+  type: string;
+  text: string;
+}
+
+interface ActionToast {
+  name: string;
+  handler: () => void;
+}
+
+export function renderToast(
+  message: MessageToast | null,
+  action?: ActionToast | null,
+) {
   let messageText = '';
 
   if (message != null) {
@@ -33,14 +46,15 @@ export function renderToast(message, action) {
 
 export function getFavoritesAmount() {
   let favoritesAmount: number = 0;
-  const favoriteList = JSON.parse(localStorage.getItem('favoriteItems'));
+  const favoriteList: FavoriteItem[] | null =
+    getDataFromLocalStorage<FavoriteItem[]>('favoriteItems');
   favoritesAmount = favoriteList?.length || 0;
   localStorage.setItem('favoritesAmount', JSON.stringify(favoritesAmount));
   return favoritesAmount;
 }
 
 export const getUserData = () => {
-  let user: unknown = JSON.parse(localStorage.getItem('user'));
+  let user: unknown = getDataFromLocalStorage<unknown>('user');
 
   if (user == null) {
     user = {

@@ -1,9 +1,7 @@
 import { PurchaseContext } from "./purchase-context";
 
 export abstract class Product {
-  price: number;
-
-  constructor(price: number) {}
+  constructor(public price: number) {}
 
   public abstract getProductDescription(): string;
 

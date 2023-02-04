@@ -1,10 +1,9 @@
 import { renderSearchFormBlock } from './search-form.js';
 import { renderSearchStubBlock } from './search-results.js';
 import { renderUserBlock } from './user.js';
-import { checkForm } from './search.js';
 import { documentActions } from './document-actions.js';
-import { addDays, addMonths } from './date-format.js';
-import { getFavoritesAmount, getUserData } from './lib.js';
+import { addDays } from './date-format.js';
+import { getFavoritesAmount } from './lib.js';
 
 const minDate = new Date();
 const startDate = addDays(minDate, 1);

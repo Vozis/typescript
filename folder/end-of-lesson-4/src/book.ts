@@ -1,6 +1,6 @@
 import { Ratingable } from "./ratingable.js";
 import { Product } from "./product.js";
-import { IGenre, Review, BookAuthor } from "./types.js";
+import { Genre, Review, BookAuthor } from "./types.js";
 import { PurchaseContext } from "./purchase-context.js";
 
 export class Book extends Product implements Ratingable {
@@ -11,7 +11,7 @@ export class Book extends Product implements Ratingable {
 
   constructor(
     public name: string,
-    public genre: IGenre,
+    public genre: Genre,
     price: number,
     public author: BookAuthor,
     reviews?: Review[]
@@ -27,9 +27,9 @@ export class Book extends Product implements Ratingable {
     this.calculateRating();
   }
 
-  private _rating: number;
+  private _rating: number | null = null;
 
-  get rating(): number {
+  get rating(): number | null {
     return this._rating;
   }
 
@@ -63,7 +63,7 @@ export class Book extends Product implements Ratingable {
 
       this._rating = reviewSum / this.reviews.length;
     } else {
-      this._rating = null;
+      return;
     }
   }
 
